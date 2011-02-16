@@ -11,7 +11,7 @@ http://developers.facebook.com/docs/reference/api/
 
 Installation is following best practices in prestashop, so
   * Download .zip file
-  * Unzip to <your-prestashop-folder>/modules/.
+  * Unzip to <..your-prestashop-folder../modules/>.
   * Install plugin in your modules admin section, is in "seo" tab.
   * Provide your facebook id (so this e-shop is managed by you)
 
