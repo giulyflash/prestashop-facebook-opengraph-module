@@ -1,0 +1,24 @@
+#summary Installation, usage.
+
+= Introduction =
+
+This plugin implements facebook OpenGraph API for products and whole site at all.
+
+http://developers.facebook.com/docs/reference/api/
+
+
+= Installation =
+
+Installation is following best practices in prestashop, so
+  * Download .zip file
+  * Unzip to <your-prestashop-folder>/modules/.
+  * Install plugin in your modules admin section, is in "seo" tab.
+  * Provide your facebook id (so this e-shop is managed by you)
+
+
+= Debugging =
+
+Hardedst thing was get product_id and image_id, this was done by current lang_id. 
+
+   * If you are using more languages, so lang_id is present in HTTP GET (or cookies) and everyting works well. 
+   * If you are not using multiple languages and you force language in admin (as me in first project), you *MUST* hardcode your lang_id in hookHeader function.
