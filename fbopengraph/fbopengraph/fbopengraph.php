@@ -113,7 +113,7 @@ class FbOpenGraph extends Module
 	   global $smarty;
 	   
 	   //to debug this change from 0 to 1
-	   $_DEBUG = 1;
+	   $_DEBUG = 0;
 	   
 	   $actualUrl = 'http://' . $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 	   $smarty->assign('actualUrl', $actualUrl);
