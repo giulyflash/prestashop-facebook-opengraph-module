@@ -24,9 +24,9 @@
 <meta property="og:type" content="website" />
 {/if} 
 {if $isProductPage == 1}
-<meta property="og:image" content="{$img_ps_dir}p/{$id_product}-{$id_image}-medium.jpg" />
+<meta property="og:image" content="{$absoluteBaseUrl}/img/p/{$id_product}-{$id_image}-large.jpg" />
 {else}
-<meta property="og:image" content="{$img_ps_dir}logo.jpg" />
+<meta property="og:image" content="{$absoluteBaseUrl}/img/logo.jpg" />
 {/if} 
 <meta property="og:site_name" content="{$shop_name|escape:'htmlall':'UTF-8'}" />
 <meta property="fb:admins" content="{$id_fb}" />
