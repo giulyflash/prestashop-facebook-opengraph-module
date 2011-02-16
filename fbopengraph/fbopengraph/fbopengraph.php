@@ -103,9 +103,15 @@ class FbOpenGraph extends Module
 	   $actualUrl = 'http://' . $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 	   $smarty->assign('actualUrl', $actualUrl);
 	   if ($_DEBUG == 1) {
-      echo 'ActualUrl: '.$actualUrl.'</br>';
-     }
+      	echo 'ActualUrl: '.$actualUrl.'</br>';
+	   }
 	   
+	   $absoluteBaseUrl = 'http://'.htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8').__PS_BASE_URI__;
+	   $smarty->assign('absoluteBaseUrl', $absoluteBaseUrl);
+	   if ($_DEBUG == 1) {
+	   		echo 'Absolute URL: '.$absoluteBaseUrl.'</br>';
+	   }
+   
      $smarty->assign('isProductPage', intval(self::isProductPage()));
 	   if ($_DEBUG == 1) {
       echo 'IsProductPage: '.intval(self::isProductPage()).'</br>';
