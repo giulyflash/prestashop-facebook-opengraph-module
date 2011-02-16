@@ -26,7 +26,7 @@ class FbOpenGraph extends Module
 	{
 		$this->name = 'fbopengraph';
 		$this->tab = 'seo';
-		$this->version = '1.0';
+		$this->version = '0.1.1';
 
 		parent::__construct();
 
@@ -36,7 +36,9 @@ class FbOpenGraph extends Module
 
  	public function	install()
 	{
-		return (Configuration::updateValue('FACEBOOK_ADMINID', 10) AND parent::install() AND $this->registerHook('header'));
+		return (Configuration::updateValue('FACEBOOK_ADMINID', '') AND 
+				Configuration::updateValue('FACEBOOK_APPID', '') AND 
+				parent::install() AND $this->registerHook('header'));
 	}
 
 
@@ -50,13 +52,18 @@ class FbOpenGraph extends Module
   	$output .=
 		'<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
 			<fieldset><legend><img src="'.$this->_path.'logo.gif" alt="" title="" />'.$this->l('Settings').'</legend>
-				<p>'.$this->l('Facebook Admin ID').'</p><br />
+				<p>'.$this->l('Fill your facebook IDs').'</p><br />
 				<label>'.$this->l('Your Facebook ID').'</label>
 				<div class="margin-form">
 					<input type="text" size="10" name="nbr" value="'.Tools::getValue('nbr', Configuration::get('FACEBOOK_ADMINID')).'" />
-					<p class="clear">'.$this->l('Facebook Id').'</p>
+					<p class="clear">('.$this->l('Comma separated list of ids').')</p>
 					<h3><a href="http://www.facebook.com/whatismyid">'.$this->l('Whats my ID?').'</a></h3>
 				</div>
+				<label>'.$this->l('Your Facebook App ID').'</label>
+				<div class="margin-form">
+					<input type="text" size="10" name="appNbr" value="'.Tools::getValue('appNbr', Configuration::get('FACEBOOK_APPID')).'" />
+					<p class="clear">('.$this->l('Comma separated list of ids').')</p>
+				</div>				
 				<center><input type="submit" name="submitFbOpenGraph" value="'.$this->l('Save').'" class="button" /></center>
 			</fieldset>
 		</form>';
@@ -68,13 +75,21 @@ class FbOpenGraph extends Module
 		$output .= '<h2>'.$this->l('Facebook OpenGraph API settings').'</h2>';
 		if (Tools::isSubmit('submitFbOpenGraph'))
 		{
+			//update facebook id
 			if (!$nbr = Tools::getValue('nbr') OR empty($nbr))
 				$output .= '<div class="alert error">'.$this->l('You should fill facebook id field').'</div>';
-			elseif ((int)($nbr) == 0)
-				$output .= '<div class="alert error">'.$this->l('Invalid number.').'</div>';
 			else
 			{
-				Configuration::updateValue('FACEBOOK_ADMINID', (int)($nbr));
+				Configuration::updateValue('FACEBOOK_ADMINID', ($nbr));
+				$output .= '<div class="conf confirm"><img src="../img/admin/ok.gif" alt="'.$this->l('Confirmation').'" />'.$this->l('Settings updated').'</div>';
+			}
+			
+			//update facebook app id
+			if (!$appNbr = Tools::getValue('appNbr') OR empty($appNbr))
+				$output .= '<div class="alert error">'.$this->l('You should fill facebook id field').'</div>';
+			else
+			{
+				Configuration::updateValue('FACEBOOK_APPID', ($appNbr));
 				$output .= '<div class="conf confirm"><img src="../img/admin/ok.gif" alt="'.$this->l('Confirmation').'" />'.$this->l('Settings updated').'</div>';
 			}
 		}
@@ -98,7 +113,7 @@ class FbOpenGraph extends Module
 	   global $smarty;
 	   
 	   //to debug this change from 0 to 1
-	   $_DEBUG = 0;
+	   $_DEBUG = 1;
 	   
 	   $actualUrl = 'http://' . $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 	   $smarty->assign('actualUrl', $actualUrl);
@@ -124,17 +139,89 @@ class FbOpenGraph extends Module
        //change this to whatever language code you actually use  
        $id_lang = 3;
      }
-	   if ($_DEBUG == 1) {
-      echo 'IdLang: '.$id_lang.'</br>';
-     }     
+	  if ($_DEBUG == 1) {
+     	 echo 'IdLang: '.$id_lang.'</br>';
+      } 
+     
+	 
+	 /**
+	  * get contact informations
+	  */
+     $phoneNumber = Configuration::get('PS_SHOP_PHONE');
+	 if ($_DEBUG == 1) {
+      	echo 'Phone number: '.$phoneNumber.'</br>';
+     }
+     $smarty->assign('phoneNumber', $phoneNumber);
+
+     $email = Configuration::get('PS_SHOP_EMAIL');
+	 if ($_DEBUG == 1) {
+      	echo 'Email: '.$email.'</br>';
+     }
+     $smarty->assign('email', $email);
+
+     $fax = Configuration::get('PS_SHOP_FAX');
+	 if ($_DEBUG == 1) {
+      	echo 'Fax: '.$fax.'</br>';
+     }
+     $smarty->assign('fax', $fax);
+
+	/**
+	 *  Location specific META data
+	 */
+     $streetAdress = Configuration::get('PS_SHOP_ADDR1');
+	 $streetAdress2 = Configuration::get('PS_SHOP_ADDR2');
+	 if (!empty ($streetAdress2)) {
+	 	$streetAdress .= ', '.$streetAdress2;	
+	 }
+	 if ($_DEBUG == 1) {
+      	echo 'Street address: '.$streetAdress.'</br>';
+     }
+     $smarty->assign('streetAdress', $streetAdress);
+
+     $city = Configuration::get('PS_SHOP_CITY');
+	 if ($_DEBUG == 1) {
+      	echo 'City: '.$city.'</br>';
+     }
+     $smarty->assign('city', $city);
+
+     $state = Configuration::get('PS_SHOP_STATE');
+	 if ($_DEBUG == 1) {
+      	echo 'State: '.$state.'</br>';
+     }
+     $smarty->assign('state', $state);
+
+     $country = Configuration::get('PS_SHOP_COUNTRY');
+	 if ($_DEBUG == 1) {
+      	echo 'Country: '.$country.'</br>';
+     }
+     $smarty->assign('country', $country);
+
+     $shopCode = Configuration::get('PS_SHOP_CODE');
+	 if ($_DEBUG == 1) {
+      	echo 'Shop Code: '.$shopCode.'</br>';
+     }
+     $smarty->assign('shopCode', $shopCode);
 
      
-     $id_fb = intval(Configuration::get('FACEBOOK_ADMINID'));
+	 /**
+	  * get facebook ids
+	  */
+     $id_fb = Configuration::get('FACEBOOK_ADMINID');
 	   if ($_DEBUG == 1) {
       echo 'IdFb: '.$id_fb.'</br>';
      }
      $smarty->assign('id_fb', $id_fb);
-  
+
+     $id_appFb = Configuration::get('FACEBOOK_APPID');
+	   if ($_DEBUG == 1) {
+      echo 'Id APP Fb: '.$id_appFb.'</br>';
+     }
+     $smarty->assign('id_appFb', $id_appFb);
+
+
+	/**
+	 * Product specific META data 
+	 */  
      if (self::isProductPage()) {
         $id_product = $_GET['id_product'];
         if ($_DEBUG == 1) {
