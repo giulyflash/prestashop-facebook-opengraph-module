@@ -14,6 +14,7 @@ Installation is following best practices in prestashop, so
   * Unzip to <..your-prestashop-folder../modules/>.
   * Install plugin in your modules admin section, is in "seo" tab.
   * Provide your facebook id (so this e-shop is managed by you)
+  * Add "og" xml namespace to your template header.tpl <html xmlns:og="http://ogp.me/ns#">
 
 
 = Debugging =
